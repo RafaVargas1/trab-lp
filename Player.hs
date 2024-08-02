@@ -5,7 +5,9 @@ import Utils (Dice, rotateDice, removeDice)
 playerMove :: [Dice] -> IO [Dice]
 playerMove dice = do
     putStrLn "Seu turno! Escolha um dado para tirar ou rotacionar: "
-    idx <- readLn
+    idx1 <- readLn :: IO Int
+    let idx = idx1 - 1
+
     if dice !! idx == 1 then
         return (removeDice idx dice)
     else do
@@ -13,7 +15,7 @@ playerMove dice = do
         action <- getLine
         if action == "r" then
             return (rotateDice idx dice)
-        else
+        else 
             return (removeDice idx dice)
 
 computerMoveEasy :: [Dice] -> IO [Dice]
