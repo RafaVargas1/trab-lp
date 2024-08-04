@@ -1,26 +1,37 @@
 module Game (startGame) where
 
-import Player (playerMove, computerMoveEasy, computerMoveHard)
+import Player (playerMove, computerMove)
 import Utils (initializeDice, displayDice, Dice)
+
+chooseDifficult :: [Dice] -> IO ()
+chooseDifficult dice = do    
+    putStrLn "Qual será a dificuldade?"
+    putStrLn "Digite 1 para: [Fácil]"
+    putStrLn "Digite 2 para: [Difícil]"
+    level <- readLn
+    if level > 2 then do       
+        putStrLn "Entrada inválida!!!"
+        chooseDifficult dice
+    else do
+        playGame dice level True
 
 startGame :: IO ()
 startGame = do
-    putStrLn "Bem-vindo (a) ao jogo do dado!"
-    putStrLn "Informe o número de dados: "
+    putStrLn "Começando o jogo dos dados!"
+    putStrLn "Quantos serão os dados?"
     n <- readLn
     dice <- initializeDice n
-    putStrLn "Selecione o nivel de dificuldade:\n(1) - Fácil\n(2) - Difícil"
-    level <- readLn
-    playGame dice level True
+    chooseDifficult dice
 
 playGame :: [Dice] -> Int -> Bool -> IO ()
 playGame dice level isPlayerTurn = do
     displayDice dice
     if null dice then
-        putStrLn $ if isPlayerTurn then "Vitória da máquina!" else "Vitória do jogador!"
+        putStrLn $ if isPlayerTurn then "Derrota!!!" else "Vitória!!!"
     else if isPlayerTurn then do
         newDice <- playerMove dice
         playGame newDice level False
     else do
-        newDice <- if level == 1 then computerMoveEasy dice else computerMoveHard dice
+        newDice <- computerMove dice level
+        putStrLn "Vez da máquina"
         playGame newDice level True
