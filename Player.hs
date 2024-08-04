@@ -1,4 +1,4 @@
-module Player (playerMove, computerMove) where
+module Player (playerMove) where
 
 import System.Random (randomRIO)
 import Utils (Dice, rotateDice, removeDice, getNewDiceValue)
@@ -55,18 +55,6 @@ chooseSide dice idx = do
             putStrLn "Entrada inválida!!!"
             chooseSide dice idx
 
-computerSide :: Int -> IO Int
-computerSide actualDice = do
-    let aSides = [getNewDiceValue actualDice side < actualDice | side <- [1..4]]
-    let pSides = [i | (i, value) <- zip [1..4] aSides, value]
-    
-    sIndex <- randomRIO(1, length pSides)
-    let sIdx = sIndex - 1
-
-    let side = pSides !! sIdx
-
-    return side
-
 playerMove :: [Dice] -> IO [Dice]
 playerMove dice = do
     index <- chooseDice dice
@@ -77,20 +65,3 @@ playerMove dice = do
         cSide <- chooseSide dice idx
         let side = cSide
         return (rotateDice idx side dice)
-
-computerMove :: [Dice] -> Int -> IO [Dice]
-computerMove dice level = do
-    if level == 1 then do 
-        idx <- randomRIO(0, length dice-1)
-        if dice !! idx == 1 then do
-            return (removeDice idx dice)
-        else do 
-            let actualDice = dice !! idx
-            cSide <- computerSide actualDice
-            let side = cSide
-            return (rotateDice idx side dice)
-    else do
-        return dice
---        case filter (winnerConfig . flip removeDice dice) dice of
---            (x:_) -> removeDice x dice
---            [] -> dice

@@ -1,6 +1,7 @@
 module Game (startGame) where
 
-import Player (playerMove, computerMove)
+import Player (playerMove)
+import Computer (computerMove)
 import Utils (initializeDice, displayDice, Dice)
 
 chooseDifficult :: [Dice] -> IO ()
@@ -13,7 +14,10 @@ chooseDifficult dice = do
         putStrLn "Entrada inválida!!!"
         chooseDifficult dice
     else do
-        playGame dice level True
+        if level == 2 then do
+            playGame dice level False
+        else do
+            playGame dice level True
 
 startGame :: IO ()
 startGame = do
