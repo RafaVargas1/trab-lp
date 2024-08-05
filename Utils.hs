@@ -1,4 +1,7 @@
-module Utils (initializeDice, displayDice, getNewDiceValue, rotateDice, removeDice, Dice) where
+--Arthur Vieira da Silva - 202035013
+--Rafael de Oliveira Vargas - 202035022
+
+module Utils (initializeDice, displayDice, getNewDiceValue, setDice, rotateDice, removeDice, Dice) where
 
 import System.Random (randomRIO)
 
@@ -38,6 +41,9 @@ getNewDiceValue actualDice side
     | actualDice == 1 && side == 2 = 5
     | actualDice == 1 && side == 3 = 4
     | actualDice == 1 && side == 4 = 2
+
+setDice :: Int -> Int -> [Dice] -> [Dice]
+setDice idx nValue dice = take idx dice ++ [nValue] ++ drop (idx +1) dice
 
 rotateDice :: Int -> Int -> [Dice] -> [Dice]
 rotateDice idx side dice =

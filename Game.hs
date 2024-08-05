@@ -1,3 +1,6 @@
+--Arthur Vieira da Silva - 202035013
+--Rafael de Oliveira Vargas - 202035022
+
 module Game (startGame) where
 
 import Player (playerMove)
